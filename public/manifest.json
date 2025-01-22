@@ -1,0 +1,6 @@
+{
+  "manifest_version": 3,
+  "name": "Bybit Filters",
+  "version": "1.0.0",
+  "description": "A simple extension with filters for bybit P2P page"
+}
