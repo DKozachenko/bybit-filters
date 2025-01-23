@@ -2,5 +2,15 @@
   "manifest_version": 3,
   "name": "Bybit Filters",
   "version": "1.0.0",
-  "description": "A simple extension with filters for bybit P2P page"
+  "description": "A simple extension with filters for bybit P2P page",
+  "action": {
+    "default_title": "Bybit Filters - manage P2P offers with some additional filters",
+    "default_popup": "index.html#/popup"
+  },
+  "options_page": "index.html#/options",
+  "content_scripts": [
+    {
+      "matches": ["*://*.bybit.com/*"]
+    }
+  ]
 }
