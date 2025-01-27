@@ -17,7 +17,10 @@
     "48": "bybit-logo.png",
     "128": "bybit-logo.png"
   },
-  "options_page": "index.html#/options",
+  "options_ui": {
+    "page": "index.html#/options"
+  },
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": ["*://*.bybit.com/ru-RU/fiat/trade/otc/*"],

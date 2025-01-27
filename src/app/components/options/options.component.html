@@ -1,1 +1,37 @@
-<p>options works!</p>
+<h3>Настройки</h3>
+
+<form class="form">
+  <div class="form__group">
+    <label for="exclude-counterparty-filter">Фильтрация по названию контрагента:</label>
+    <input type="checkbox" id="exclude-counterparty-filter" />
+  </div>
+
+  <div class="form__group">
+    <label for="price-filter">Фильтрация по цене:</label>
+    <input type="checkbox" id="price-filter" />
+  </div>
+
+  <div class="form__group">
+    <label for="bottom-limit-filter">Фильтрация по нижнему лимиту:</label>
+    <input type="checkbox" id="bottom-limit-filter" />
+  </div>
+
+  <div class="form__group">
+    <label for="top-limit-filter">Фильтрация по верхнему лимиту:</label>
+    <input type="checkbox" id="top-limit-filter" />
+  </div>
+
+  <div class="form__group">
+    <label for="top-limit-filter">Действие при НЕпопадании в фильтр:</label>
+
+    <div class="radio-group-item">
+      <input type="radio" id="darken-elem" name="not-in-filter" value="HTML">
+      <label for="darken-elem">Затемнить элемент</label><br>
+    </div>
+
+    <div class="radio-group-item">
+      <input type="radio" id="remove-elem" name="not-in-filter" value="CSS">
+      <label for="remove-elem">Удалить элемент</label><br>
+    </div>
+  </div>
+</form>
