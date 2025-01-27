@@ -21,6 +21,11 @@
     "page": "index.html#/options"
   },
   "permissions": ["storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "bybit-filter@com"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["*://*.bybit.com/ru-RU/fiat/trade/otc/*"],
