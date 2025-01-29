@@ -1,0 +1,33 @@
+.note {
+  margin: 15px 0;
+  font-size: 14px;
+  line-height: 1;
+  color: #303030;
+}
+
+.button {
+  width: 100%;
+  max-width: 250px;
+  border: 1px solid #3a3a3a;
+  background-color: #FFF;
+
+  font-size: 16px;
+  line-height: 1;
+  color: #3a3a3a;
+
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+
+  transition: background-color 300ms linear, color 300ms linear;
+
+  &:hover {
+    background-color: #3a3a3a;
+    color: #FFF;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subscription, switchMap } from 'rxjs';
 import { BrowserStorageService } from '../../services/browser-storage.service';
-import { NotInFilterElemAction, Storage } from '../../types';
+import { NotInFilterElemAction, Options } from '../../types';
 
 type FormGroupType = {
   filterByCounterparty: FormControl<boolean | null>;
@@ -33,7 +33,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
 
   protected readonly NotInFilterElemAction = NotInFilterElemAction;
 
-  form: FormGroup<FormGroupType> = new FormGroup({
+  protected form: FormGroup<FormGroupType> = new FormGroup({
     filterByCounterparty: new FormControl<boolean>(false),
     filterByPrice: new FormControl<boolean>(false),
     filterByBottomLimit: new FormControl<boolean>(false),
@@ -42,21 +42,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.browserStorageService.get<Storage>([
-      'filterByCounterparty',
-      'filterByPrice',
-      'filterByBottomLimit',
-      'filterByTopLimit',
-      'notInFilterElemAction'
-    ]).subscribe({
-      next: (value: Partial<Storage>) => {
-        this.form.patchValue(value);
-      },
-      error: (err) => {
-        console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction' из хранилища: ${err}`)
-      }
-    });
+    this.patchFormByOptions();
 
     this.formSubscription = this.form.valueChanges
       .pipe(
@@ -69,6 +55,18 @@ export class OptionsComponent implements OnInit, OnDestroy {
           console.error(`Ошибка при сохрании объекта ${this.form.value} в хранилище: ${err}`)
         }
       });
+  }
+
+  private patchFormByOptions(): void {
+    this.browserStorageService.getOptions().subscribe({
+      next: (value: Partial<Options>) => {
+        this.form.patchValue(value);
+      },
+      error: (err) => {
+        console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
+          'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction' из хранилища: ${err}`)
+      }
+    });
   }
 
   ngOnDestroy(): void {

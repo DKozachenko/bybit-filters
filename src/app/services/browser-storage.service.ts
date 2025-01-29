@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BROWSER } from '../types';
+import { BROWSER, Filters, Options } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +28,25 @@ export class BrowserStorageService {
         })
         .catch(err => observer.error(err));
     });
+  }
+
+  getOptions(): Observable<Partial<Options>> {
+    return this.get<Options>([
+      'filterByCounterparty',
+      'filterByPrice',
+      'filterByBottomLimit',
+      'filterByTopLimit',
+      'notInFilterElemAction'
+    ]);
+  }
+
+  getFilters(): Observable<Partial<Filters>> {
+    return this.get<Filters>([
+      'excludeCounterparty',
+      'price',
+      'priceSign',
+      'topLimit',
+      'bottomLimit'
+    ]);
   }
 }

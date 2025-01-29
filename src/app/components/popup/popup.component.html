@@ -1,1 +1,41 @@
-<p>popup works 2!</p>
+<h3>Фильтры</h3>
+
+<p class="note">*Если контрол является недоступным, разблокировать его можно в настройках расширения</p>
+
+<form class="form" [formGroup]="form" (submit)="updateStorage()">
+  <div class="form__group column">
+    <label for="exclude-counterparty">Названия контрагентов, которых необходимо исключить (через запятую без пробелов):</label>
+    <input type="text" id="exclude-counterparty" formControlName="excludeCounterparty" />
+  </div>
+
+  <div class="form__group">
+    <label for="price">Цена:</label>
+    <input type="number" id="price" formControlName="price" />
+  </div>
+
+  <div class="form__group radio-group">
+    <label for="price-sign">Знак цены:</label>
+
+    <div class="radio-group__item">
+      <input type="radio" id="more" formControlName="priceSign" [value]="PriceSign.More" />
+      <label for="more">>=</label>
+    </div>
+
+    <div class="radio-group__item">
+      <input type="radio" id="less" formControlName="priceSign" [value]="PriceSign.Less" />
+      <label for="less"><=</label>
+    </div>
+  </div>
+
+  <div class="form__group">
+    <label for="bottom-limit">Нижний лимит:</label>
+    <input type="number" id="bottom-limit" formControlName="bottomLimit" />
+  </div>
+
+  <div class="form__group">
+    <label for="top-limit">Верхний лимит:</label>
+    <input type="number" id="top-limit" formControlName="topLimit" />
+  </div>
+
+  <button class="button" type="submit" [disabled]="form.invalid || form.pending">Сохранить</button>
+</form>
