@@ -22,7 +22,7 @@ async function getConfig() {
   return Promise.all([getOptions(), getFilters()])
     .then(([options, filters]) => {
       const config = {
-        filters: [],
+        filters: {},
         notInFilterElemAction: options?.notInFilterElemAction ?? 'darken'
       }
 
@@ -42,28 +42,13 @@ async function getConfig() {
         config.filters['topLimit'] = filters?.topLimit;
       }
 
-      if (Boolean(options?.bottomLimit && filters?.bottomLimit)) {
+      if (Boolean(options?.filterByBottomLimit && filters?.bottomLimit)) {
         config.filters['bottomLimit'] = filters?.bottomLimit;
       }
 
       return config;
     });
 }
-
-/**
- *
- * Config {
- *  filters: Filter[],
- *  notInFilterElemAction: string
- * }
- *
- * Filter {
- *   filterName: string,
- *   filterValue: any,
- *   hasToBeApplied: boolean
- * }
- *
- */
 
 function parseRange(valueRangeStr) {
   const [leftPart, rightPart] = valueRangeStr.split('~');
@@ -74,28 +59,36 @@ function parseRange(valueRangeStr) {
   return [from, to];
 }
 
-function handleNotInFilterElement(offersTr, config) {
+function handleUnsuitableElement(offerTr, config) {
   if (config.notInFilterElemAction === 'darken') {
-    offersTr.style.backgroundColor = 'gray';
+    // TODO: mb diagonal stripes
+    // https://css-tricks.com/stripes-css/
+    offerTr.style.backgroundColor = '#3d3d3d';
+    offerTr.style.pointerEvents = 'none';
   }
 
   if (config.notInFilterElemAction === 'remove') {
-    offersTr.remove();
+    offerTr.remove();
   }
+}
+
+function resetElementStyles(offerTr) {
+  offerTr.style.backgroundColor = 'transparent';
+  offerTr.style.pointerEvents = 'auto';
 }
 
 function handlePriceFilters(offersTr, config, price) {
   // Если фильтрация по цене (больше)
   if (config.filters['priceSign'] === 'more') {
     if (price < config.filters['price']) {
-      handleNotInFilterElement(offersTr, config);
+      handleUnsuitableElement(offersTr, config);
     }
   }
 
   // Если фильтрация по цене (меньше)
   if (config.filters['priceSign'] === 'less') {
     if (price > config.filters['price']) {
-      handleNotInFilterElement(offersTr, config);
+      handleUnsuitableElement(offersTr, config);
     }
   }
 }
@@ -108,11 +101,11 @@ function handleOffer(offerTr, config) {
   const valueRange = offerTr.querySelectorAll('.ql-value')[1].textContent;
   const [from, to] = parseRange(valueRange);
 
-  console.warn(advetiserName, price, from, to);
-
+  resetElementStyles(offerTr);
   // Если имя контрагента, входит в список игнорируемых
+  // TODO: check not on strcit comparison, but on includes string in advetiserName
   if (config.filters?.['excludeCounterparty']?.includes(advetiserName)) {
-    handleNotInFilterElement(offerTr, config);
+    handleUnsuitableElement(offerTr, config);
   }
 
   if (config.filters?.['price'] && config.filters?.['priceSign']) {
@@ -121,12 +114,12 @@ function handleOffer(offerTr, config) {
 
   // Если верхний лимит больше фильтра
   if (config.filters?.['topLimit'] < to) {
-    handleNotInFilterElement(offerTr, config);
+    handleUnsuitableElement(offerTr, config);
   }
 
   // Если нижний лимит меньше фильтра
   if (config.filters?.['bottomLimit'] > from) {
-    handleNotInFilterElement(offerTr, config);
+    handleUnsuitableElement(offerTr, config);
   }
 }
 
@@ -157,6 +150,7 @@ function filterOffers() {
 const UPDATE_TIME = 3000;
 
 browser.storage.sync.onChanged.addListener(filterOffers);
-setInterval(filterOffers, UPDATE_TIME)
-
+setInterval(filterOffers, UPDATE_TIME);
+// TODO: remove intervar
+// TODO observe table body?
 

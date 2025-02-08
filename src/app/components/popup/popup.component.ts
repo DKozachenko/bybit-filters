@@ -35,6 +35,7 @@ export class PopupComponent implements OnInit {
     excludeCounterparty: new FormControl<string>(''),
     price: new FormControl<number>(1, [Validators.min(1)]),
     priceSign: new FormControl<PriceSign>(PriceSign.More),
+    // TODO remove initial values
     topLimit: new FormControl<number>(1000),
     bottomLimit: new FormControl<number>(1, [Validators.min(1)])
   });
