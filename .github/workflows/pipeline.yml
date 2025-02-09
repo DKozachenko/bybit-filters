@@ -10,7 +10,7 @@ on:
 
 env:
   DIST_PATH: ./dist/bybit-filters/browser
-  RELEASE_FILE_NAME: bybit-filters.tar
+  RELEASE_FILE_NAME: bybit-filters.tar.gz
 
 jobs:
   build:
@@ -50,7 +50,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Make archive
-        run: tar -cvf ${{ env.RELEASE_FILE_NAME }} ${{ env.DIST_PATH }}
+        run: tar -czvf ${{ env.RELEASE_FILE_NAME }} -C ${{ env.DIST_PATH }} .
       - name: Make Release
         uses: softprops/action-gh-release@v2
         with:
@@ -59,4 +59,4 @@ jobs:
           body_path: ./README.md
           files: ${{ env.RELEASE_FILE_NAME }}
           draft: false
-          prerelease: true
+          prerelease: false
