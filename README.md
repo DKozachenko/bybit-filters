@@ -1,59 +1,35 @@
-# BybitFilters
+# Bybit Filters
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
+[Firefox extension](https://addons.mozilla.org/en-US/firefox/extensions/) for filtering P2P offers on [Bybit](https://www.bybit.com/ru-RU/fiat/trade/otc/buy/USDT/RUB) written with [Angular](https://angular.dev/).
 
-## Development server
-
-To start a local development server, run:
+### Run as SPA in browser
 
 ```bash
-ng serve
+npm ci
+npm run start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Run as extension
 
 ```bash
-ng generate component component-name
+npm ci
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+[Install](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing) as custom extension using path `./dist/bybit-filters/browser`.
 
-```bash
-ng generate --help
-```
+### References
 
-## Building
+- https://habr.com/ru/articles/851234/
+- https://habr.com/ru/articles/858078/
 
-To build the project run:
+### CHANGELOG
 
-```bash
-ng build
-```
+#### [1.0.0] - 09.02.2025
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Added
 
-## Running unit tests
+- Main functional of filtering
+- Options component for extension options
+- Popup component for showing popup on extension icon
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
