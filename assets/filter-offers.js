@@ -153,4 +153,5 @@ browser.storage.sync.onChanged.addListener(filterOffers);
 setInterval(filterOffers, UPDATE_TIME);
 // TODO: remove intervar
 // TODO observe table body?
+// TODO: filter недоступные
 

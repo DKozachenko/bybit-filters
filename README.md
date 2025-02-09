@@ -33,3 +33,9 @@ npm run build
 - Options component for extension options
 - Popup component for showing popup on extension icon
 
+#### [1.0.1] - 
+
+### Changed
+
+- Default values for form in popup component are `null`
+

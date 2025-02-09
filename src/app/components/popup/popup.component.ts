@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { forkJoin } from 'rxjs';
 import { BrowserStorageService } from '../../services/browser-storage.service';
 import { PriceSign, Options, Filters } from '../../types';
+import { limitValidator } from '../../validators/limits.validator';
 
 type FormGroupType = {
   excludeCounterparty: FormControl<string | null>,
@@ -12,7 +13,7 @@ type FormGroupType = {
   bottomLimit: FormControl<number | null>,
 }
 
-type FormGroupValue = {
+export type FormGroupValue = {
   excludeCounterparty: string | null,
   price: number | null,
   priceSign: PriceSign | null,
@@ -32,13 +33,12 @@ export class PopupComponent implements OnInit {
   protected readonly PriceSign = PriceSign;
 
   protected form: FormGroup<FormGroupType> = new FormGroup<FormGroupType>({
-    excludeCounterparty: new FormControl<string>(''),
-    price: new FormControl<number>(1, [Validators.min(1)]),
-    priceSign: new FormControl<PriceSign>(PriceSign.More),
-    // TODO remove initial values
-    topLimit: new FormControl<number>(1000),
-    bottomLimit: new FormControl<number>(1, [Validators.min(1)])
-  });
+    excludeCounterparty: new FormControl<string | null>(null),
+    price: new FormControl<number | null>(null, [Validators.min(1)]),
+    priceSign: new FormControl<PriceSign | null>(null),
+    topLimit: new FormControl<number | null>(null),
+    bottomLimit: new FormControl<number | null>(null, [Validators.min(1)])
+  }, [limitValidator()]);
 
   ngOnInit(): void {
     forkJoin([
@@ -80,7 +80,7 @@ export class PopupComponent implements OnInit {
     })
       .subscribe({
         error: (err) => {
-          console.error(`Ошибка при сохрании объекта ${this.form.value} в хранилище: ${err}`)
+          console.error(`Ошибка при сохранении объекта ${this.form.value} в хранилище: ${err}`)
         }
       });
   }
