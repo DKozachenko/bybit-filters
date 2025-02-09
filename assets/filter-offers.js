@@ -78,14 +78,14 @@ function resetElementStyles(offerTr) {
 }
 
 function handlePriceFilters(offersTr, config, price) {
-  // Если фильтрация по цене (больше)
+  // If filter by price (more)
   if (config.filters['priceSign'] === 'more') {
     if (price < config.filters['price']) {
       handleUnsuitableElement(offersTr, config);
     }
   }
 
-  // Если фильтрация по цене (меньше)
+  // If filter by price (less)
   if (config.filters['priceSign'] === 'less') {
     if (price > config.filters['price']) {
       handleUnsuitableElement(offersTr, config);
@@ -100,24 +100,32 @@ function handleOffer(offerTr, config) {
   const price = +priceAmount.replace(priceUnit, '').replace(',', '.');
   const valueRange = offerTr.querySelectorAll('.ql-value')[1].textContent;
   const [from, to] = parseRange(valueRange);
+  const buttonText = offerTr.querySelector('.trade-list-action-button button').textContent;
 
   resetElementStyles(offerTr);
-  // Если имя контрагента, входит в список игнорируемых
+
+  // Filter inaccessible offers by default
+  if (buttonText.toLowerCase() === 'недоступно') {
+    handleUnsuitableElement(offerTr, config);
+  }
+
+  // If the counterparty name is included in the ignore list
   // TODO: check not on strcit comparison, but on includes string in advetiserName
   if (config.filters?.['excludeCounterparty']?.includes(advetiserName)) {
     handleUnsuitableElement(offerTr, config);
   }
 
+  // If have both price filters
   if (config.filters?.['price'] && config.filters?.['priceSign']) {
     handlePriceFilters(offerTr, config, price);
   }
 
-  // Если верхний лимит больше фильтра
+  // If bottom limit more filter value
   if (config.filters?.['topLimit'] < to) {
     handleUnsuitableElement(offerTr, config);
   }
 
-  // Если нижний лимит меньше фильтра
+  // If botton limit less filter value
   if (config.filters?.['bottomLimit'] > from) {
     handleUnsuitableElement(offerTr, config);
   }
@@ -176,6 +184,4 @@ function main() {
 
 const UPDATE_TIME = 2000;
 intervalId = setInterval(main, UPDATE_TIME);
-
-// TODO: filter недоступные
 
