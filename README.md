@@ -33,9 +33,10 @@ npm run build
 - Options component for extension options
 - Popup component for showing popup on extension icon
 
-#### [1.0.1] - 
+#### [1.1.0] - 09.02.2025
 
 ### Changed
 
 - Default values for form in popup component are `null`
+- `setInterval` in content script (`filter-offers.js`) each 3s to `MutationObserver` on table tr elements
 

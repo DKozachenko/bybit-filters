@@ -124,22 +124,12 @@ function handleOffer(offerTr, config) {
 }
 
 function filterOffers() {
-  const loginSpan = document.querySelector('.header-login');
-
-  if (loginSpan) {
-    return;
-  }
-
-  const tradesList = document.querySelector('.trade-list__content table');
-
-  if (!tradesList) {
-    return;
-  }
-
   getConfig()
     .then(config => {
+      // Have to reget elements each time
+      const tradesList = document.querySelector('.trade-list__content table');
       const offersTr = tradesList.querySelectorAll('.trade-table__tbody tr');
-      offersTr.forEach(offerTr => handleOffer(offerTr, config));
+      offersTr.forEach(offerTr => handleOffer(offerTr, config))
     })
     .catch(err => {
       console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice', 'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction',
@@ -147,11 +137,45 @@ function filterOffers() {
     });
 }
 
-const UPDATE_TIME = 3000;
+let intervalId = null;
 
-browser.storage.sync.onChanged.addListener(filterOffers);
-setInterval(filterOffers, UPDATE_TIME);
-// TODO: remove intervar
-// TODO observe table body?
+function dropInterval() {
+  clearInterval(intervalId);
+  intervalId = null;
+}
+
+function main() {
+  const loginSpan = document.querySelector('.header-login');
+
+  if (loginSpan) {
+    return;
+  }
+
+  const tradesList = document.querySelector('.trade-list__content table');
+  if (!tradesList) {
+    return;
+  }
+
+  const tbody = tradesList.querySelector('.trade-table__tbody');
+
+  const observer = new MutationObserver(filterOffers);
+
+  observer.observe(tbody, {
+    childList: true,
+    subtree: false,
+    characterData: false,
+    attributes: false,
+    attributeOldValue: false,
+    characterDataOldValue: false
+  });
+
+  browser.storage.sync.onChanged.addListener(filterOffers);
+
+  dropInterval();
+}
+
+const UPDATE_TIME = 2000;
+intervalId = setInterval(main, UPDATE_TIME);
+
 // TODO: filter недоступные
 
