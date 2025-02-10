@@ -61,10 +61,11 @@ function parseRange(valueRangeStr) {
 
 function handleUnsuitableElement(offerTr, config) {
   if (config.notInFilterElemAction === 'darken') {
-    // TODO: mb diagonal stripes
-    // https://css-tricks.com/stripes-css/
-    offerTr.style.backgroundColor = '#3d3d3d';
+    const button = offerTr.querySelector('.trade-list-action-button button');
+
+    offerTr.style.background = 'repeating-linear-gradient(135deg, gray, gray 10px, white 10px, white 20px)'
     offerTr.style.pointerEvents = 'none';
+    button.disabled = true;
   }
 
   if (config.notInFilterElemAction === 'remove') {
@@ -73,8 +74,15 @@ function handleUnsuitableElement(offerTr, config) {
 }
 
 function resetElementStyles(offerTr) {
-  offerTr.style.backgroundColor = 'transparent';
+  const button = offerTr.querySelector('.trade-list-action-button button');
+  const buttonText = button.textContent;
+
+  offerTr.style.background = 'initial';
   offerTr.style.pointerEvents = 'auto';
+
+  if (buttonText.toLowerCase() !== 'недоступно') {
+    button.disabled = false;
+  }
 }
 
 function handlePriceFilters(offersTr, config, price) {

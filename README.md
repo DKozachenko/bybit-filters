@@ -45,4 +45,6 @@ npm run build
 ### Added
 
 - Filter inaccessible offers by default
+- CSS background strips for unsuitable elements
+- Disabling button for unsuitable elements
 
