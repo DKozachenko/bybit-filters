@@ -101,8 +101,19 @@ function handlePriceFilters(offersTr, config, price) {
   }
 }
 
+// https://edvins.io/how-to-strip-emojis-from-string-in-java-script
+function stripEmojis(str) {
+  return str
+    .replace(
+      /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+      ''
+    )
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function handleOffer(offerTr, config) {
-  const advetiserName = offerTr.querySelector('.advertiser-name').textContent;
+  const counterpartyName = offerTr.querySelector('.advertiser-name').textContent;
   const priceAmount = offerTr.querySelector('.price-amount').textContent;
   const priceUnit = offerTr.querySelector('.price-unit').textContent;
   const price = +priceAmount.replace(priceUnit, '').replace(',', '.');
@@ -118,8 +129,7 @@ function handleOffer(offerTr, config) {
   }
 
   // If the counterparty name is included in the ignore list
-  // TODO: check not on strcit comparison, but on includes string in advetiserName
-  if (config.filters?.['excludeCounterparty']?.includes(advetiserName)) {
+  if (config.filters?.['excludeCounterparty']?.includes(stripEmojis(counterpartyName))) {
     handleUnsuitableElement(offerTr, config);
   }
 

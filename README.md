@@ -40,11 +40,12 @@ npm run build
 - Default values for form in popup component are `null`
 - `setInterval` in content script (`filter-offers.js`) each 3s to `MutationObserver` on table tr elements
 
-#### [1.1.1] -
+#### [1.2.0] - 11.02.2025
 
 ### Added
 
 - Filter inaccessible offers by default
 - CSS background strips for unsuitable elements
 - Disabling button for unsuitable elements
+- Remove emodjis from counterparty name for better checking 
 
