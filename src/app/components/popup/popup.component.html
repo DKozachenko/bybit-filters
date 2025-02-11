@@ -4,8 +4,13 @@
 
 <form class="form" [formGroup]="form" (submit)="updateStorage()">
   <div class="form__group column">
-    <label for="exclude-counterparty">Названия контрагентов, которых необходимо исключить (через запятую без пробелов):</label>
+    <label for="exclude-counterparty">Названия контрагентов, которых нужно игнорировать (через запятую без пробелов):</label>
     <input type="text" id="exclude-counterparty" formControlName="excludeCounterparty" />
+  </div>
+
+  <div class="form__group column">
+    <label for="favorite-counterparty">Названия контрагентов, которых нужно подсветить (через запятую без пробелов):</label>
+    <input type="text" id="favorite-counterparty" formControlName="favoriteCounterparty" />
   </div>
 
   <div class="form__group">

@@ -7,6 +7,7 @@ import { limitValidator } from '../../validators/limits.validator';
 
 type FormGroupType = {
   excludeCounterparty: FormControl<string | null>,
+  favoriteCounterparty: FormControl<string | null>,
   price: FormControl<number | null>,
   priceSign: FormControl<PriceSign | null>,
   topLimit: FormControl<number | null>,
@@ -14,6 +15,7 @@ type FormGroupType = {
 }
 
 export type FormGroupValue = {
+  favoriteCounterparty: string | null,
   excludeCounterparty: string | null,
   price: number | null,
   priceSign: PriceSign | null,
@@ -33,6 +35,7 @@ export class PopupComponent implements OnInit {
   protected readonly PriceSign = PriceSign;
 
   protected form: FormGroup<FormGroupType> = new FormGroup<FormGroupType>({
+    favoriteCounterparty: new FormControl<string | null>(null),
     excludeCounterparty: new FormControl<string | null>(null),
     price: new FormControl<number | null>(null, [Validators.min(1)]),
     priceSign: new FormControl<PriceSign | null>(null),
@@ -49,11 +52,13 @@ export class PopupComponent implements OnInit {
       next: ([options, filters]: [Partial<Options>, Partial<Filters>]) => {
         this.form.patchValue({
           ...filters,
+          favoriteCounterparty: filters?.favoriteCounterparty?.join(',') ?? null,
           excludeCounterparty: filters?.excludeCounterparty?.join(',') ?? null
         });
 
         if (!options?.filterByCounterparty) {
           this.form.get('excludeCounterparty')?.disable();
+          this.form.get('favoriteCounterparty')?.disable();
         }
         if (!options?.filterByPrice) {
           this.form.get('price')?.disable();
@@ -74,8 +79,9 @@ export class PopupComponent implements OnInit {
   }
 
   updateStorage(): void {
-    this.browserStorageService.set<Omit<Partial<FormGroupValue>, 'excludeCounterparty'> & { excludeCounterparty: string[] | null }>({
+    this.browserStorageService.set<Omit<Partial<FormGroupValue>, 'excludeCounterparty' | 'favoriteCounterparty'> & { excludeCounterparty: string[] | null, favoriteCounterparty: string[] | null }>({
       ...this.form.value,
+      favoriteCounterparty: this.form.value?.favoriteCounterparty?.split(',') ?? null,
       excludeCounterparty: this.form.value?.excludeCounterparty?.split(',') ?? null
     })
       .subscribe({

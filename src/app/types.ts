@@ -23,6 +23,7 @@ export interface Options {
 }
 
 export interface Filters {
+  favoriteCounterparty: string[];
   excludeCounterparty: string[];
   price: number;
   priceSign: PriceSign;

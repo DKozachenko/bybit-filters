@@ -49,3 +49,9 @@ npm run build
 - Disabling button for unsuitable elements
 - Remove emodjis from counterparty name for better checking 
 
+#### [1.3.0] - 11.02.2025
+
+### Added
+
+- Highlight for favorite counterparties
+

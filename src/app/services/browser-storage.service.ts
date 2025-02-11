@@ -42,6 +42,7 @@ export class BrowserStorageService {
 
   getFilters(): Observable<Partial<Filters>> {
     return this.get<Filters>([
+      'favoriteCounterparty',
       'excludeCounterparty',
       'price',
       'priceSign',

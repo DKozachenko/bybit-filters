@@ -10,6 +10,7 @@ async function getOptions() {
 
 async function getFilters() {
   return browser.storage.sync.get([
+    'favoriteCounterparty',
     'excludeCounterparty',
     'price',
     'priceSign',
@@ -26,24 +27,28 @@ async function getConfig() {
         notInFilterElemAction: options?.notInFilterElemAction ?? 'darken'
       }
 
+      if (Boolean(options?.filterByCounterparty && filters?.favoriteCounterparty && filters?.favoriteCounterparty?.length > 0)) {
+        config.filters['favoriteCounterparty'] = filters.favoriteCounterparty;
+      }
+
       if (Boolean(options?.filterByCounterparty && filters?.excludeCounterparty && filters?.excludeCounterparty?.length > 0)) {
-        config.filters['excludeCounterparty'] = filters?.excludeCounterparty;
+        config.filters['excludeCounterparty'] = filters.excludeCounterparty;
       }
 
       if (Boolean(options?.filterByPrice && filters?.price)) {
-        config.filters['price'] = filters?.price;
+        config.filters['price'] = filters.price;
       }
 
       if (Boolean(options?.filterByPrice && filters?.priceSign)) {
-        config.filters['priceSign'] = filters?.priceSign;
+        config.filters['priceSign'] = filters.priceSign;
       }
 
       if (Boolean(options?.filterByTopLimit && filters?.topLimit)) {
-        config.filters['topLimit'] = filters?.topLimit;
+        config.filters['topLimit'] = filters.topLimit;
       }
 
       if (Boolean(options?.filterByBottomLimit && filters?.bottomLimit)) {
-        config.filters['bottomLimit'] = filters?.bottomLimit;
+        config.filters['bottomLimit'] = filters.bottomLimit;
       }
 
       return config;
@@ -63,7 +68,7 @@ function handleUnsuitableElement(offerTr, config) {
   if (config.notInFilterElemAction === 'darken') {
     const button = offerTr.querySelector('.trade-list-action-button button');
 
-    offerTr.style.background = 'repeating-linear-gradient(135deg, gray, gray 10px, white 10px, white 20px)'
+    offerTr.style.background = 'repeating-linear-gradient(135deg, gray, gray 10px, white 10px, white 20px)';
     offerTr.style.pointerEvents = 'none';
     button.disabled = true;
   }
@@ -71,6 +76,10 @@ function handleUnsuitableElement(offerTr, config) {
   if (config.notInFilterElemAction === 'remove') {
     offerTr.remove();
   }
+}
+
+function highlightElement(offerTr) {
+  offerTr.style.background = '#d3ffd3';
 }
 
 function resetElementStyles(offerTr) {
@@ -114,6 +123,7 @@ function stripEmojis(str) {
 
 function handleOffer(offerTr, config) {
   const counterpartyName = offerTr.querySelector('.advertiser-name').textContent;
+  const counterpartyNameWithoutEmojis = stripEmojis(counterpartyName);
   const priceAmount = offerTr.querySelector('.price-amount').textContent;
   const priceUnit = offerTr.querySelector('.price-unit').textContent;
   const price = +priceAmount.replace(priceUnit, '').replace(',', '.');
@@ -128,8 +138,13 @@ function handleOffer(offerTr, config) {
     handleUnsuitableElement(offerTr, config);
   }
 
+  // If the counterparty name is included in the favorite list
+  if (config.filters?.['favoriteCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
+    highlightElement(offerTr);
+  }
+
   // If the counterparty name is included in the ignore list
-  if (config.filters?.['excludeCounterparty']?.includes(stripEmojis(counterpartyName))) {
+  if (config.filters?.['excludeCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
     handleUnsuitableElement(offerTr, config);
   }
 
@@ -159,7 +174,7 @@ function filterOffers() {
     })
     .catch(err => {
       console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice', 'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction',
-        'excludeCounterparty', 'price', 'priceSign', 'topLimit', 'bottomLimit' из хранилища: ${err}`)
+        'favoriteCounterparty', 'excludeCounterparty', 'price', 'priceSign', 'topLimit', 'bottomLimit' из хранилища: ${err}`)
     });
 }
 
