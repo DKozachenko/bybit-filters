@@ -28,7 +28,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.bybit.com/ru-RU/fiat/trade/otc/*"],
+      "matches": ["*://*.bybit.com/ru-RU/p2p/buy/USDT/RUB"],
       "js": ["filter-offers.js"]
     }
   ]

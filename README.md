@@ -55,3 +55,10 @@ npm run build
 
 - Highlight for favorite counterparties
 
+#### [1.4.0] - 18.08.2025
+
+### Added
+
+- Changed `matches` URL in `content_scripts`
+- Fixed version of `@types/firefox-webext-browser`
+
