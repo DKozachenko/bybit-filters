@@ -21,35 +21,33 @@ async function getFilters() {
 async function getConfig() {
   return Promise.all([getOptions(), getFilters()])
     .then(([options, filters]) => {
-      const config = {
-        filters: {},
-      }
+      const filtersConfig = {};
 
       if (Boolean(options?.filterByCounterparty && filters?.favoriteCounterparty && filters?.favoriteCounterparty?.length > 0)) {
-        config.filters['favoriteCounterparty'] = filters.favoriteCounterparty;
+        filtersConfig['favoriteCounterparty'] = filters.favoriteCounterparty;
       }
 
       if (Boolean(options?.filterByCounterparty && filters?.excludeCounterparty && filters?.excludeCounterparty?.length > 0)) {
-        config.filters['excludeCounterparty'] = filters.excludeCounterparty;
+        filtersConfig['excludeCounterparty'] = filters.excludeCounterparty;
       }
 
       if (Boolean(options?.filterByPrice && filters?.price)) {
-        config.filters['price'] = filters.price;
+        filtersConfig['price'] = filters.price;
       }
 
       if (Boolean(options?.filterByPrice && filters?.priceSign)) {
-        config.filters['priceSign'] = filters.priceSign;
+        filtersConfig['priceSign'] = filters.priceSign;
       }
 
       if (Boolean(options?.filterByTopLimit && filters?.topLimit)) {
-        config.filters['topLimit'] = filters.topLimit;
+        filtersConfig['topLimit'] = filters.topLimit;
       }
 
       if (Boolean(options?.filterByBottomLimit && filters?.bottomLimit)) {
-        config.filters['bottomLimit'] = filters.bottomLimit;
+        filtersConfig['bottomLimit'] = filters.bottomLimit;
       }
 
-      return config;
+      return filtersConfig;
     });
 }
 
@@ -88,15 +86,15 @@ function resetElementStyles(offerTr) {
 
 function handlePriceFilters(offersTr, config, price) {
   // If filter by price (more)
-  if (config.filters['priceSign'] === 'more') {
-    if (price < config.filters['price']) {
+  if (config['priceSign'] === 'more') {
+    if (price < config['price']) {
       handleUnsuitableElement(offersTr);
     }
   }
 
   // If filter by price (less)
-  if (config.filters['priceSign'] === 'less') {
-    if (price > config.filters['price']) {
+  if (config['priceSign'] === 'less') {
+    if (price > config['price']) {
       handleUnsuitableElement(offersTr);
     }
   }
@@ -131,27 +129,27 @@ function handleOffer(offerTr, config) {
   }
 
   // If the counterparty name is included in the favorite list
-  if (config.filters?.['favoriteCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
+  if (config?.['favoriteCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
     highlightElement(offerTr);
   }
 
   // If the counterparty name is included in the ignore list
-  if (config.filters?.['excludeCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
+  if (config?.['excludeCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
     handleUnsuitableElement(offerTr);
   }
 
   // If have both price filters
-  if (config.filters?.['price'] && config.filters?.['priceSign']) {
+  if (config?.['price'] && config?.['priceSign']) {
     handlePriceFilters(offerTr, config, price);
   }
 
   // If bottom limit more filter value
-  if (config.filters?.['topLimit'] < to) {
+  if (config?.['topLimit'] < to) {
     handleUnsuitableElement(offerTr);
   }
 
   // If botton limit less filter value
-  if (config.filters?.['bottomLimit'] > from) {
+  if (config?.['bottomLimit'] > from) {
     handleUnsuitableElement(offerTr);
   }
 }
