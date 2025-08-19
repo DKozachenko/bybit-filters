@@ -1,10 +1,5 @@
 import { InjectionToken } from "@angular/core";
 
-export enum NotInFilterElemAction {
-  Darken = 'darken',
-  Remove = 'remove'
-}
-
 export enum PriceSign {
   More = 'more',
   Less = 'less',
@@ -19,7 +14,6 @@ export interface Options {
   filterByPrice: boolean;
   filterByBottomLimit: boolean;
   filterByTopLimit: boolean;
-  notInFilterElemAction: NotInFilterElemAction;
 }
 
 export interface Filters {

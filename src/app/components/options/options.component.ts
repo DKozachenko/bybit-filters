@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subscription, switchMap } from 'rxjs';
 import { BrowserStorageService } from '../../services/browser-storage.service';
-import { NotInFilterElemAction, Options } from '../../types';
+import { Options } from '../../types';
 
 type FormGroupType = {
   filterByCounterparty: FormControl<boolean | null>;
   filterByPrice: FormControl<boolean | null>;
   filterByBottomLimit: FormControl<boolean | null>;
   filterByTopLimit: FormControl<boolean | null>;
-  notInFilterElemAction: FormControl<NotInFilterElemAction | null>;
 }
 
 type FormGroupValue = {
@@ -17,7 +16,6 @@ type FormGroupValue = {
   filterByPrice: boolean | null;
   filterByBottomLimit: boolean | null;
   filterByTopLimit: boolean | null;
-  notInFilterElemAction: NotInFilterElemAction | null;
 }
 
 @Component({
@@ -31,14 +29,11 @@ export class OptionsComponent implements OnInit, OnDestroy {
   private readonly browserStorageService: BrowserStorageService = inject(BrowserStorageService);
   private formSubscription!: Subscription;
 
-  protected readonly NotInFilterElemAction = NotInFilterElemAction;
-
   protected form: FormGroup<FormGroupType> = new FormGroup({
     filterByCounterparty: new FormControl<boolean>(false),
     filterByPrice: new FormControl<boolean>(false),
     filterByBottomLimit: new FormControl<boolean>(false),
     filterByTopLimit: new FormControl<boolean>(false),
-    notInFilterElemAction: new FormControl<NotInFilterElemAction>(NotInFilterElemAction.Darken)
   });
 
   ngOnInit(): void {
@@ -64,7 +59,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction' из хранилища: ${err}`)
+          'filterByBottomLimit', 'filterByTopLimit' из хранилища: ${err}`)
       }
     });
   }

@@ -4,7 +4,6 @@ async function getOptions() {
     'filterByPrice',
     'filterByBottomLimit',
     'filterByTopLimit',
-    'notInFilterElemAction'
   ]);
 }
 
@@ -24,7 +23,6 @@ async function getConfig() {
     .then(([options, filters]) => {
       const config = {
         filters: {},
-        notInFilterElemAction: options?.notInFilterElemAction ?? 'darken'
       }
 
       if (Boolean(options?.filterByCounterparty && filters?.favoriteCounterparty && filters?.favoriteCounterparty?.length > 0)) {
@@ -64,18 +62,12 @@ function parseRange(valueRangeStr) {
   return [from, to];
 }
 
-function handleUnsuitableElement(offerTr, config) {
-  if (config.notInFilterElemAction === 'darken') {
-    const button = offerTr.querySelector('.trade-list-action-button button');
+function handleUnsuitableElement(offerTr) {
+  const button = offerTr.querySelector('.trade-list-action-button button');
 
-    offerTr.style.background = 'repeating-linear-gradient(135deg, gray, gray 10px, white 10px, white 20px)';
-    offerTr.style.pointerEvents = 'none';
-    button.disabled = true;
-  }
-
-  if (config.notInFilterElemAction === 'remove') {
-    offerTr.remove();
-  }
+  offerTr.style.background = 'repeating-linear-gradient(135deg, gray, gray 10px, white 10px, white 20px)';
+  offerTr.style.pointerEvents = 'none';
+  button.disabled = true;
 }
 
 function highlightElement(offerTr) {
@@ -98,14 +90,14 @@ function handlePriceFilters(offersTr, config, price) {
   // If filter by price (more)
   if (config.filters['priceSign'] === 'more') {
     if (price < config.filters['price']) {
-      handleUnsuitableElement(offersTr, config);
+      handleUnsuitableElement(offersTr);
     }
   }
 
   // If filter by price (less)
   if (config.filters['priceSign'] === 'less') {
     if (price > config.filters['price']) {
-      handleUnsuitableElement(offersTr, config);
+      handleUnsuitableElement(offersTr);
     }
   }
 }
@@ -135,7 +127,7 @@ function handleOffer(offerTr, config) {
 
   // Filter inaccessible offers by default
   if (buttonText.toLowerCase() === 'недоступно') {
-    handleUnsuitableElement(offerTr, config);
+    handleUnsuitableElement(offerTr);
   }
 
   // If the counterparty name is included in the favorite list
@@ -145,7 +137,7 @@ function handleOffer(offerTr, config) {
 
   // If the counterparty name is included in the ignore list
   if (config.filters?.['excludeCounterparty']?.includes(counterpartyNameWithoutEmojis)) {
-    handleUnsuitableElement(offerTr, config);
+    handleUnsuitableElement(offerTr);
   }
 
   // If have both price filters
@@ -155,12 +147,12 @@ function handleOffer(offerTr, config) {
 
   // If bottom limit more filter value
   if (config.filters?.['topLimit'] < to) {
-    handleUnsuitableElement(offerTr, config);
+    handleUnsuitableElement(offerTr);
   }
 
   // If botton limit less filter value
   if (config.filters?.['bottomLimit'] > from) {
-    handleUnsuitableElement(offerTr, config);
+    handleUnsuitableElement(offerTr);
   }
 }
 
@@ -173,7 +165,7 @@ function filterOffers() {
       offersTr.forEach(offerTr => handleOffer(offerTr, config))
     })
     .catch(err => {
-      console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice', 'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction',
+      console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice', 'filterByBottomLimit', 'filterByTopLimit',
         'favoriteCounterparty', 'excludeCounterparty', 'price', 'priceSign', 'topLimit', 'bottomLimit' из хранилища: ${err}`)
     });
 }

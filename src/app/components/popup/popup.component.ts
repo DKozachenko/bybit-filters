@@ -73,7 +73,7 @@ export class PopupComponent implements OnInit {
       },
       error: (err) => {
         console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByBottomLimit', 'filterByTopLimit','notInFilterElemAction' из хранилища: ${err}`)
+          'filterByBottomLimit', 'filterByTopLimit' из хранилища: ${err}`)
       }
     });
   }

@@ -36,7 +36,6 @@ export class BrowserStorageService {
       'filterByPrice',
       'filterByBottomLimit',
       'filterByTopLimit',
-      'notInFilterElemAction'
     ]);
   }
 
