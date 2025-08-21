@@ -191,9 +191,9 @@ function main() {
   const observer = new MutationObserver(filterOffers);
 
   observer.observe(tbody, {
+    subtree: true,
     childList: true,
-    subtree: false,
-    characterData: false,
+    characterData: true,
     attributes: false,
     attributeOldValue: false,
     characterDataOldValue: false
