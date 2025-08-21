@@ -1,13 +1,7 @@
-import { InjectionToken } from "@angular/core";
-
 export enum PriceSign {
   More = 'more',
   Less = 'less',
 }
-
-export const BROWSER: InjectionToken<typeof browser> = new InjectionToken<typeof browser>('Browser extension browser', {
-  factory: () => browser,
-});
 
 export interface Options {
   filterByCounterparty: boolean;

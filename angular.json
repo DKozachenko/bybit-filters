@@ -35,7 +35,7 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "extension": {
               "budgets": [
                 {
                   "type": "initial",
@@ -53,27 +53,39 @@
                   "inlineCritical": false
                 }
               },
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/environments/environment.web.ts",
+                  "with": "src/app/environments/environment.extension.ts"
+                }
+              ]
             },
-            "development": {
+            "web": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/app/environments/environment.web.ts",
+                  "with": "src/app/environments/environment.web.ts"
+                }
+              ]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "extension"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "bybit-filters:build:production"
+            "extension": {
+              "buildTarget": "bybit-filters:build:extension"
             },
-            "development": {
-              "buildTarget": "bybit-filters:build:development"
+            "web": {
+              "buildTarget": "bybit-filters:build:web"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "web"
         }
       }
     }

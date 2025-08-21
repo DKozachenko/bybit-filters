@@ -3,8 +3,8 @@
   "version": "1.4.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build"
+    "start:web": "ng serve --configuration=web",
+    "build:ext": "ng build --configuration=extension"
   },
   "private": true,
   "dependencies": {

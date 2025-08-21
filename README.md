@@ -6,14 +6,14 @@
 
 ```bash
 npm ci
-npm run start
+npm run start:web
 ```
 
 ### Run as extension
 
 ```bash
 npm ci
-npm run build
+npm run build:ext
 ```
 
 [Install](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing) as custom extension using path `./dist/bybit-filters/browser`.
@@ -56,6 +56,10 @@ npm run build
 - Highlight for favorite counterparties
 
 #### [1.4.0] - 18.08.2025
+
+### Added
+
+- Splited configurations for running as SPA and extension
 
 ### Changed
 
