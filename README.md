@@ -57,8 +57,13 @@ npm run build
 
 #### [1.4.0] - 18.08.2025
 
-### Added
+### Changed
 
 - Changed `matches` URL in `content_scripts`
 - Fixed version of `@types/firefox-webext-browser`
+- Replace `bottomLimit` and `topLimit` to `amountMin` and `amountMax`
+
+### Removed
+
+- `notInFilterElemAction` option
 

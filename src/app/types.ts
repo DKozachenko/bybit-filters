@@ -12,8 +12,7 @@ export const BROWSER: InjectionToken<typeof browser> = new InjectionToken<typeof
 export interface Options {
   filterByCounterparty: boolean;
   filterByPrice: boolean;
-  filterByBottomLimit: boolean;
-  filterByTopLimit: boolean;
+  filterByAmount: boolean;
 }
 
 export interface Filters {
@@ -21,8 +20,8 @@ export interface Filters {
   excludeCounterparty: string[];
   price: number;
   priceSign: PriceSign;
-  topLimit: number;
-  bottomLimit: number;
+  amountMin: number;
+  amountMax: number;
 }
 
 export interface ExtensionStorage extends Options, Filters {};

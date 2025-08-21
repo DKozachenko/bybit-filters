@@ -6,7 +6,7 @@ import { BROWSER, Filters, Options } from '../types';
   providedIn: 'root'
 })
 export class BrowserStorageService {
-  private readonly BROWSER: typeof browser = inject(BROWSER);
+  private readonly BROWSER: any = inject(BROWSER);
 
   get<T extends { [key: string]: any }>(keys: string | string[]): Observable<Partial<T>> {
     return new Observable(observer => {
@@ -15,7 +15,7 @@ export class BrowserStorageService {
           observer.next(<T>value);
           observer.complete();
         })
-        .catch(err => observer.error(err));
+        .catch((err: any) => observer.error(err));
     });
   }
 
@@ -26,7 +26,7 @@ export class BrowserStorageService {
           observer.next();
           observer.complete();
         })
-        .catch(err => observer.error(err));
+        .catch((err: any) => observer.error(err));
     });
   }
 
@@ -34,8 +34,7 @@ export class BrowserStorageService {
     return this.get<Options>([
       'filterByCounterparty',
       'filterByPrice',
-      'filterByBottomLimit',
-      'filterByTopLimit',
+      'filterByAmount',
     ]);
   }
 
@@ -45,8 +44,8 @@ export class BrowserStorageService {
       'excludeCounterparty',
       'price',
       'priceSign',
-      'topLimit',
-      'bottomLimit'
+      'amountMin',
+      'amountMax'
     ]);
   }
 }

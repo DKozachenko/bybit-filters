@@ -3,15 +3,15 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { forkJoin } from 'rxjs';
 import { BrowserStorageService } from '../../services/browser-storage.service';
 import { PriceSign, Options, Filters } from '../../types';
-import { limitValidator } from '../../validators/limits.validator';
+import { amountValidator } from '../../validators/amount.validator';
 
 type FormGroupType = {
   excludeCounterparty: FormControl<string | null>,
   favoriteCounterparty: FormControl<string | null>,
   price: FormControl<number | null>,
   priceSign: FormControl<PriceSign | null>,
-  topLimit: FormControl<number | null>,
-  bottomLimit: FormControl<number | null>,
+  amountMin: FormControl<number | null>,
+  amountMax: FormControl<number | null>,
 }
 
 export type FormGroupValue = {
@@ -19,8 +19,8 @@ export type FormGroupValue = {
   excludeCounterparty: string | null,
   price: number | null,
   priceSign: PriceSign | null,
-  topLimit: number | null,
-  bottomLimit: number | null,
+  amountMin: number | null,
+  amountMax: number | null,
 }
 
 @Component({
@@ -39,9 +39,9 @@ export class PopupComponent implements OnInit {
     excludeCounterparty: new FormControl<string | null>(null),
     price: new FormControl<number | null>(null, [Validators.min(1)]),
     priceSign: new FormControl<PriceSign | null>(null),
-    topLimit: new FormControl<number | null>(null),
-    bottomLimit: new FormControl<number | null>(null, [Validators.min(1)])
-  }, [limitValidator()]);
+    amountMin: new FormControl<number | null>(null, [Validators.min(1)]),
+    amountMax: new FormControl<number | null>(null),
+  }, [amountValidator()]);
 
   ngOnInit(): void {
     forkJoin([
@@ -64,16 +64,14 @@ export class PopupComponent implements OnInit {
           this.form.get('price')?.disable();
           this.form.get('priceSign')?.disable();
         }
-        if (!options?.filterByBottomLimit) {
-          this.form.get('bottomLimit')?.disable();
-        }
-        if (!options?.filterByTopLimit) {
-          this.form.get('topLimit')?.disable();
+        if (!options?.filterByAmount) {
+          this.form.get('amountMin')?.disable();
+          this.form.get('amountMax')?.disable();
         }
       },
       error: (err) => {
         console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByBottomLimit', 'filterByTopLimit' из хранилища: ${err}`)
+          'filterByAmount' из хранилища: ${err}`)
       }
     });
   }

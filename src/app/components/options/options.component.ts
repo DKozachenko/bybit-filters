@@ -7,15 +7,13 @@ import { Options } from '../../types';
 type FormGroupType = {
   filterByCounterparty: FormControl<boolean | null>;
   filterByPrice: FormControl<boolean | null>;
-  filterByBottomLimit: FormControl<boolean | null>;
-  filterByTopLimit: FormControl<boolean | null>;
+  filterByAmount: FormControl<boolean | null>;
 }
 
 type FormGroupValue = {
   filterByCounterparty: boolean | null;
   filterByPrice: boolean | null;
-  filterByBottomLimit: boolean | null;
-  filterByTopLimit: boolean | null;
+  filterByAmount: boolean | null;
 }
 
 @Component({
@@ -32,8 +30,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
   protected form: FormGroup<FormGroupType> = new FormGroup({
     filterByCounterparty: new FormControl<boolean>(false),
     filterByPrice: new FormControl<boolean>(false),
-    filterByBottomLimit: new FormControl<boolean>(false),
-    filterByTopLimit: new FormControl<boolean>(false),
+    filterByAmount: new FormControl<boolean>(false),
   });
 
   ngOnInit(): void {
@@ -59,7 +56,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByBottomLimit', 'filterByTopLimit' из хранилища: ${err}`)
+          'filterByAmount' из хранилища: ${err}`)
       }
     });
   }

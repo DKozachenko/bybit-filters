@@ -16,9 +16,7 @@
   <div class="form__group">
     <label for="price">Цена:</label>
     <input type="number" id="price" formControlName="price" />
-  </div>
 
-  <div class="form__group radio-group">
     <label for="price-sign">Знак цены:</label>
 
     <div class="radio-group__item">
@@ -33,13 +31,11 @@
   </div>
 
   <div class="form__group">
-    <label for="bottom-limit">Нижний лимит:</label>
-    <input type="number" id="bottom-limit" formControlName="bottomLimit" />
-  </div>
+    <label for="amount-min">Сумма от:</label>
+    <input type="number" id="amount-min" formControlName="amountMin" />
 
-  <div class="form__group">
-    <label for="top-limit">Верхний лимит:</label>
-    <input type="number" id="top-limit" formControlName="topLimit" />
+    <label for="amount-max">до:</label>
+    <input type="number" id="amount-max" formControlName="amountMax" />
   </div>
 
   <button class="button" type="submit" [disabled]="form.invalid || form.pending">Сохранить</button>

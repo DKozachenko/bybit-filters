@@ -2,8 +2,7 @@ async function getOptions() {
   return browser.storage.sync.get([
     'filterByCounterparty',
     'filterByPrice',
-    'filterByBottomLimit',
-    'filterByTopLimit',
+    'filterByAmount',
   ]);
 }
 
@@ -13,8 +12,8 @@ async function getFilters() {
     'excludeCounterparty',
     'price',
     'priceSign',
-    'topLimit',
-    'bottomLimit'
+    'amountMin',
+    'amountMax'
   ]);
 }
 
@@ -39,12 +38,12 @@ async function getConfig() {
         filtersConfig['priceSign'] = filters.priceSign;
       }
 
-      if (Boolean(options?.filterByTopLimit && filters?.topLimit)) {
-        filtersConfig['topLimit'] = filters.topLimit;
+      if (Boolean(options?.filterByAmount && filters?.amountMin)) {
+        filtersConfig['amountMin'] = filters.amountMin;
       }
 
-      if (Boolean(options?.filterByBottomLimit && filters?.bottomLimit)) {
-        filtersConfig['bottomLimit'] = filters.bottomLimit;
+      if (Boolean(options?.filterByAmount && filters?.amountMax)) {
+        filtersConfig['amountMax'] = filters.amountMax;
       }
 
       return filtersConfig;
@@ -143,13 +142,13 @@ function handleOffer(offerTr, config) {
     handlePriceFilters(offerTr, config, price);
   }
 
-  // If bottom limit more filter value
-  if (config?.['topLimit'] < to) {
+  // If amount min more filter value
+  if (config?.['amountMin'] > to) {
     handleUnsuitableElement(offerTr);
   }
 
-  // If botton limit less filter value
-  if (config?.['bottomLimit'] > from) {
+  // If amount max less filter value
+  if (config?.['amountMax'] < from) {
     handleUnsuitableElement(offerTr);
   }
 }
@@ -163,8 +162,8 @@ function filterOffers() {
       offersTr.forEach(offerTr => handleOffer(offerTr, config))
     })
     .catch(err => {
-      console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice', 'filterByBottomLimit', 'filterByTopLimit',
-        'favoriteCounterparty', 'excludeCounterparty', 'price', 'priceSign', 'topLimit', 'bottomLimit' из хранилища: ${err}`)
+      console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice', 'filterByAmount',
+        'favoriteCounterparty', 'excludeCounterparty', 'price', 'priceSign', 'amountMin', 'amountMax' из хранилища: ${err}`)
     });
 }
 
