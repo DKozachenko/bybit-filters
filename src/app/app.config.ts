@@ -7,7 +7,7 @@ export const BROWSER: InjectionToken<typeof browser> = new InjectionToken<typeof
 
 const browserProvider: Provider = {
   provide: BROWSER,
-  useValue: environment.mode === 'web' ? null : browser,
+  useValue: environment.mode === 'extension' ? browser : null,
 }
 
 export const appConfig: ApplicationConfig = {
