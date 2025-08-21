@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BROWSER, Filters, Options } from '../types';
+import { BROWSER } from '../app.config';
+import { Filters, Options } from '../types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrowserStorageService {
-  private readonly BROWSER: any = inject(BROWSER);
+  private readonly BROWSER: typeof browser = inject(BROWSER);
 
   get<T extends { [key: string]: any }>(keys: string | string[]): Observable<Partial<T>> {
     return new Observable(observer => {
