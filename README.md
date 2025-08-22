@@ -13,7 +13,7 @@ npm run start:web
 
 ```bash
 npm ci
-npm run build:ext
+npm run assembly:ext
 ```
 
 [Install](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing) as custom extension using path `./dist/bybit-filters/browser`.
@@ -60,12 +60,14 @@ npm run build:ext
 ### Added
 
 - Splited configurations for running as SPA and extension
+- Generated content script with TS
 
 ### Changed
 
 - Changed `matches` URL in `content_scripts`
 - Fixed version of `@types/firefox-webext-browser`
 - Replace `bottomLimit` and `topLimit` to `amountMin` and `amountMax`
+- Replace all string values into const `enums`
 
 ### Removed
 

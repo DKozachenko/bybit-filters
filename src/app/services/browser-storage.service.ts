@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BROWSER } from '../app.config';
-import { Filters, Options } from '../types';
+import { Filters, FiltersKeys, Options, OptionsKeys } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -33,20 +33,20 @@ export class BrowserStorageService {
 
   getOptions(): Observable<Partial<Options>> {
     return this.get<Options>([
-      'filterByCounterparty',
-      'filterByPrice',
-      'filterByAmount',
+      OptionsKeys.FILTER_BY_COUNTERPARTY,
+      OptionsKeys.FILTER_BY_PRICE,
+      OptionsKeys.FILTER_BY_AMOUNT,
     ]);
   }
 
   getFilters(): Observable<Partial<Filters>> {
     return this.get<Filters>([
-      'favoriteCounterparty',
-      'excludeCounterparty',
-      'price',
-      'priceSign',
-      'amountMin',
-      'amountMax'
+      FiltersKeys.FAVORITE_COUNTERPARTY,
+      FiltersKeys.EXCLUDE_COUNTERPARTY,
+      FiltersKeys.PRICE,
+      FiltersKeys.PRICE_SIGN,
+      FiltersKeys.AMOUNT_MIN,
+      FiltersKeys.AMOUNT_MAX,
     ]);
   }
 }

@@ -2,25 +2,25 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { BrowserStorageService } from '../../services/browser-storage.service';
-import { PriceSign, Options, Filters } from '../../types';
+import { PriceSign, Options, Filters, FiltersKeys, OptionsKeys } from '../../types';
 import { amountValidator } from '../../validators/amount.validator';
 
 type FormGroupType = {
-  excludeCounterparty: FormControl<string | null>,
-  favoriteCounterparty: FormControl<string | null>,
-  price: FormControl<number | null>,
-  priceSign: FormControl<PriceSign | null>,
-  amountMin: FormControl<number | null>,
-  amountMax: FormControl<number | null>,
+  [FiltersKeys.EXCLUDE_COUNTERPARTY]: FormControl<string | null>,
+  [FiltersKeys.FAVORITE_COUNTERPARTY]: FormControl<string | null>,
+  [FiltersKeys.PRICE]: FormControl<number | null>,
+  [FiltersKeys.PRICE_SIGN]: FormControl<PriceSign | null>,
+  [FiltersKeys.AMOUNT_MIN]: FormControl<number | null>,
+  [FiltersKeys.AMOUNT_MAX]: FormControl<number | null>,
 }
 
 export type FormGroupValue = {
-  favoriteCounterparty: string | null,
-  excludeCounterparty: string | null,
-  price: number | null,
-  priceSign: PriceSign | null,
-  amountMin: number | null,
-  amountMax: number | null,
+  [FiltersKeys.EXCLUDE_COUNTERPARTY]: string | null,
+  [FiltersKeys.FAVORITE_COUNTERPARTY]: string | null,
+  [FiltersKeys.PRICE]: number | null,
+  [FiltersKeys.PRICE_SIGN]: PriceSign | null,
+  [FiltersKeys.AMOUNT_MIN]: number | null,
+  [FiltersKeys.AMOUNT_MAX]: number | null,
 }
 
 @Component({
@@ -35,12 +35,12 @@ export class PopupComponent implements OnInit {
   protected readonly PriceSign = PriceSign;
 
   protected form: FormGroup<FormGroupType> = new FormGroup<FormGroupType>({
-    favoriteCounterparty: new FormControl<string | null>(null),
-    excludeCounterparty: new FormControl<string | null>(null),
-    price: new FormControl<number | null>(null, [Validators.min(1)]),
-    priceSign: new FormControl<PriceSign | null>(null),
-    amountMin: new FormControl<number | null>(null, [Validators.min(1)]),
-    amountMax: new FormControl<number | null>(null),
+    [FiltersKeys.FAVORITE_COUNTERPARTY]: new FormControl<string | null>(null),
+    [FiltersKeys.EXCLUDE_COUNTERPARTY]: new FormControl<string | null>(null),
+    [FiltersKeys.PRICE]: new FormControl<number | null>(null, [Validators.min(1)]),
+    [FiltersKeys.PRICE_SIGN]: new FormControl<PriceSign | null>(null),
+    [FiltersKeys.AMOUNT_MIN]: new FormControl<number | null>(null, [Validators.min(1)]),
+    [FiltersKeys.AMOUNT_MAX]: new FormControl<number | null>(null),
   }, [amountValidator()]);
 
   ngOnInit(): void {
@@ -52,35 +52,38 @@ export class PopupComponent implements OnInit {
       next: ([options, filters]: [Partial<Options>, Partial<Filters>]) => {
         this.form.patchValue({
           ...filters,
-          favoriteCounterparty: filters?.favoriteCounterparty?.join(',') ?? null,
-          excludeCounterparty: filters?.excludeCounterparty?.join(',') ?? null
+          [FiltersKeys.FAVORITE_COUNTERPARTY]: filters?.[FiltersKeys.FAVORITE_COUNTERPARTY]?.join(',') ?? null,
+          [FiltersKeys.EXCLUDE_COUNTERPARTY]: filters?.[FiltersKeys.EXCLUDE_COUNTERPARTY]?.join(',') ?? null
         });
 
-        if (!options?.filterByCounterparty) {
-          this.form.get('excludeCounterparty')?.disable();
-          this.form.get('favoriteCounterparty')?.disable();
+        if (!options?.[OptionsKeys.FILTER_BY_COUNTERPARTY]) {
+          this.form.get(FiltersKeys.FAVORITE_COUNTERPARTY)?.disable();
+          this.form.get(FiltersKeys.EXCLUDE_COUNTERPARTY)?.disable();
         }
-        if (!options?.filterByPrice) {
-          this.form.get('price')?.disable();
-          this.form.get('priceSign')?.disable();
+        if (!options?.[OptionsKeys.FILTER_BY_PRICE]) {
+          this.form.get(FiltersKeys.PRICE)?.disable();
+          this.form.get(FiltersKeys.PRICE_SIGN)?.disable();
         }
-        if (!options?.filterByAmount) {
-          this.form.get('amountMin')?.disable();
-          this.form.get('amountMax')?.disable();
+        if (!options?.[OptionsKeys.FILTER_BY_AMOUNT]) {
+          this.form.get(FiltersKeys.AMOUNT_MIN)?.disable();
+          this.form.get(FiltersKeys.AMOUNT_MAX)?.disable();
         }
       },
       error: (err) => {
-        console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByAmount' из хранилища: ${err}`)
+        console.error(`Ошибка при получении ключей '${OptionsKeys.FILTER_BY_COUNTERPARTY}', '${OptionsKeys.FILTER_BY_PRICE}',
+          '${OptionsKeys.FILTER_BY_AMOUNT}' из хранилища: ${err}`);
       }
     });
   }
 
   updateStorage(): void {
-    this.browserStorageService.set<Omit<Partial<FormGroupValue>, 'excludeCounterparty' | 'favoriteCounterparty'> & { excludeCounterparty: string[] | null, favoriteCounterparty: string[] | null }>({
+    this.browserStorageService.set<Omit<Partial<FormGroupValue>, FiltersKeys.EXCLUDE_COUNTERPARTY | FiltersKeys.FAVORITE_COUNTERPARTY>
+      & {
+        [FiltersKeys.EXCLUDE_COUNTERPARTY]: string[] | null,
+        [FiltersKeys.FAVORITE_COUNTERPARTY]: string[] | null }>({
       ...this.form.value,
-      favoriteCounterparty: this.form.value?.favoriteCounterparty?.split(',') ?? null,
-      excludeCounterparty: this.form.value?.excludeCounterparty?.split(',') ?? null
+      [FiltersKeys.EXCLUDE_COUNTERPARTY]: this.form.value?.[FiltersKeys.EXCLUDE_COUNTERPARTY]?.split(',') ?? null,
+      [FiltersKeys.FAVORITE_COUNTERPARTY]: this.form.value?.[FiltersKeys.FAVORITE_COUNTERPARTY]?.split(',') ?? null
     })
       .subscribe({
         error: (err) => {

@@ -2,19 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subscription, switchMap } from 'rxjs';
 import { BrowserStorageService } from '../../services/browser-storage.service';
-import { Options } from '../../types';
+import { Options, OptionsKeys } from '../../types';
 
-type FormGroupType = {
-  filterByCounterparty: FormControl<boolean | null>;
-  filterByPrice: FormControl<boolean | null>;
-  filterByAmount: FormControl<boolean | null>;
-}
+type FormGroupType = { [ OptKey in OptionsKeys ]: FormControl<boolean | null> };
 
-type FormGroupValue = {
-  filterByCounterparty: boolean | null;
-  filterByPrice: boolean | null;
-  filterByAmount: boolean | null;
-}
+type FormGroupValue = { [ OptKey in OptionsKeys ]: boolean | null };
 
 @Component({
   selector: 'app-options',
@@ -28,9 +20,9 @@ export class OptionsComponent implements OnInit, OnDestroy {
   private formSubscription!: Subscription;
 
   protected form: FormGroup<FormGroupType> = new FormGroup({
-    filterByCounterparty: new FormControl<boolean>(false),
-    filterByPrice: new FormControl<boolean>(false),
-    filterByAmount: new FormControl<boolean>(false),
+    [OptionsKeys.FILTER_BY_COUNTERPARTY]: new FormControl<boolean>(false),
+    [OptionsKeys.FILTER_BY_PRICE]: new FormControl<boolean>(false),
+    [OptionsKeys.FILTER_BY_AMOUNT]: new FormControl<boolean>(false),
   });
 
   ngOnInit(): void {
@@ -55,8 +47,8 @@ export class OptionsComponent implements OnInit, OnDestroy {
         this.form.patchValue(value);
       },
       error: (err) => {
-        console.error(`Ошибка при получении ключей 'filterByCounterparty', 'filterByPrice',
-          'filterByAmount' из хранилища: ${err}`)
+        console.error(`Ошибка при получении ключей '${OptionsKeys.FILTER_BY_COUNTERPARTY}', '${OptionsKeys.FILTER_BY_PRICE}',
+          '${OptionsKeys.FILTER_BY_AMOUNT}' из хранилища: ${err}`);
       }
     });
   }

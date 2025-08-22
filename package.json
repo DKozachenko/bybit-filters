@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start:web": "ng serve --configuration=web",
-    "build:ext": "ng build --configuration=extension"
+    "compile:content-script": "esbuild ./assets/handle-offers.ts --bundle --minify --outfile=./assets/index.js",
+    "build:ext": "ng build --configuration=extension",
+    "assembly:ext": "npm run compile:content-script; npm run build:ext"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +25,7 @@
     "@angular-devkit/build-angular": "19.0.5",
     "@angular/cli": "19.0.5",
     "@angular/compiler-cli": "19.0.0",
+    "esbuild": "0.25.9",
     "typescript": "5.6.2"
   }
 }
