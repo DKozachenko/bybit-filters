@@ -2,13 +2,18 @@
   "name": "bybit-filters",
   "version": "1.4.0",
   "scripts": {
-    "ng": "ng",
     "start:web": "ng serve --configuration=web",
     "compile:content-script": "esbuild ./assets/handle-offers.ts --bundle --minify --outfile=./assets/index.js",
+    "copy:license": "cp ./LICENSE.md ./assets",
     "build:ext": "ng build --configuration=extension",
-    "assembly:ext": "npm run compile:content-script; npm run build:ext"
+    "assembly:ext": "npm run compile:content-script; npm run copy:license; npm run build:ext"
   },
   "private": true,
+  "author": {
+    "name": "Diana Kozachenko",
+    "email": "kozachenkodiana03@gmail.com"
+  },
+  "license": "MIT",
   "dependencies": {
     "@angular/common": "19.0.0",
     "@angular/compiler": "19.0.0",
