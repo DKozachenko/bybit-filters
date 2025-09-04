@@ -73,3 +73,10 @@ npm run assembly:ext
 
 - `notInFilterElemAction` option
 
+#### [1.5.0] - 04.09.2025
+
+### Added
+
+- MIT License
+
+
