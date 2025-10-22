@@ -2,6 +2,27 @@
 
 [Firefox extension](https://addons.mozilla.org/en-US/firefox/extensions/) for filtering P2P offers on [Bybit](https://www.bybit.com/ru-RU/fiat/trade/otc/buy/USDT/RUB) written with [Angular](https://angular.dev/).
 
+### How it looks like
+
+*Whole UI is written in Russian language.*
+
+You can choose needed filters on Preferences page:
+
+![Preferences Page](./readme-images/preferences-page.png "Preferences Page")
+
+In popup you can set values for chosen filters:
+
+![Popub Page](./readme-images/popup-page.png "Popub Page")
+
+> You have to click button to save values. Otherwise changes will not be setup.
+
+Offers that **are** suitable for filters will not be affected.  
+Offers that **are not** suitable for filters will be painted over. 
+
+![Example](./readme-images/example.png "Example")
+
+This selection is running only on [USDT/RUB pair page](https://www.bybit.com/ru-RU/p2p/buy/USDT/RUB) (see [manifest.json](https://github.com/DKozachenko/bybit-filters/blob/05ca4391d31cae1a40e5eaf9dbbec6a3d134d7b5/assets/manifest.json#L31)).
+
 ### Run as SPA in browser
 
 ```bash
@@ -78,5 +99,11 @@ npm run assembly:ext
 ### Added
 
 - MIT License
+
+#### [1.5.1] - 22.10.2025
+
+### Added
+
+- Section 'How it looks like' to `README.md`
 
 
