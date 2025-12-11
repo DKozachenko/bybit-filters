@@ -170,8 +170,9 @@ function filterOffers() {
     .then(config => {
       // Have to reget elements each time
       const tradesList = document.querySelector<HTMLTableElement>('.trade-list__content table');
-      const offersTr = tradesList?.querySelectorAll<HTMLElement>('.trade-table__tbody tr');
-      offersTr?.forEach(offerTr => handleOffer(offerTr, config))
+      const offersTr = tradesList?.querySelectorAll<HTMLElement>('.trade-table__tbody tr') ?? [];
+      const suitableOffersTr = Array.from(offersTr).filter(offerTr => !offerTr.id);
+      suitableOffersTr?.forEach(offerTr => handleOffer(offerTr, config))
     })
     .catch(err => {
       console.error(`Ошибка при получении ключей '${OptionsKeys.FILTER_BY_COUNTERPARTY}', '${OptionsKeys.FILTER_BY_PRICE}', '${OptionsKeys.FILTER_BY_AMOUNT}',

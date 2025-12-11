@@ -106,4 +106,10 @@ npm run assembly:ext
 
 - Section 'How it looks like' to `README.md`
 
+#### [1.5.2] - 11.12.2025
+
+### Changed
+
+- Handle of `tr` in offers `table`
+
 
