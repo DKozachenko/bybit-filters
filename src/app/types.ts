@@ -7,13 +7,11 @@ export const enum OptionsKeys {
   FILTER_BY_COUNTERPARTY = 'filterByCounterparty',
   FILTER_BY_PRICE = 'filterByPrice',
   FILTER_BY_AMOUNT = 'filterByAmount',
+  FILTER_BY_ORDERS_AMOUNT = 'filterByOrdersAmount',
+  FILTER_BY_EXECUTION_PERCENT = 'filterByExecutionPercent',
 }
 
-export interface Options {
-  [OptionsKeys.FILTER_BY_COUNTERPARTY]: boolean;
-  [OptionsKeys.FILTER_BY_PRICE]: boolean;
-  [OptionsKeys.FILTER_BY_AMOUNT]: boolean;
-}
+export type Options = { [ OptKey in OptionsKeys ]: boolean };
 
 export const enum FiltersKeys {
   FAVORITE_COUNTERPARTY = 'favoriteCounterparty',
@@ -22,6 +20,8 @@ export const enum FiltersKeys {
   PRICE_SIGN = 'priceSign',
   AMOUNT_MIN = 'amountMin',
   AMOUNT_MAX = 'amountMax',
+  ORDERS_AMOUNT = 'ordersAmount',
+  EXECUTION_PERCENT = 'executionPercent'
 }
 
 export interface Filters {
@@ -31,6 +31,8 @@ export interface Filters {
   [FiltersKeys.PRICE_SIGN]: PriceSign;
   [FiltersKeys.AMOUNT_MIN]: number;
   [FiltersKeys.AMOUNT_MAX]: number;
+  [FiltersKeys.ORDERS_AMOUNT]: number;
+  [FiltersKeys.EXECUTION_PERCENT]: number;
 }
 
 export interface ExtensionStorage extends Options, Filters {};

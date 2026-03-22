@@ -38,5 +38,15 @@
     <input type="number" id="amount-max" formControlName="amountMax" />
   </div>
 
+  <div class="form__group">
+    <label for="orders-amount">Количество ордеров (>=):</label>
+    <input type="number" id="orders-amount" formControlName="ordersAmount" />
+  </div>
+
+  <div class="form__group">
+    <label for="execution-percent">Процент выполнения ордеров (>=):</label>
+    <input type="number" id="execution-percent" formControlName="executionPercent" />
+  </div>
+
   <button class="button" type="submit" [disabled]="form.invalid || form.pending">Сохранить</button>
 </form>

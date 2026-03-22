@@ -5,15 +5,6 @@ import { BrowserStorageService } from '../../services/browser-storage.service';
 import { PriceSign, Options, Filters, FiltersKeys, OptionsKeys } from '../../types';
 import { amountValidator } from '../../validators/amount.validator';
 
-type FormGroupType = {
-  [FiltersKeys.EXCLUDE_COUNTERPARTY]: FormControl<string | null>,
-  [FiltersKeys.FAVORITE_COUNTERPARTY]: FormControl<string | null>,
-  [FiltersKeys.PRICE]: FormControl<number | null>,
-  [FiltersKeys.PRICE_SIGN]: FormControl<PriceSign | null>,
-  [FiltersKeys.AMOUNT_MIN]: FormControl<number | null>,
-  [FiltersKeys.AMOUNT_MAX]: FormControl<number | null>,
-}
-
 export type FormGroupValue = {
   [FiltersKeys.EXCLUDE_COUNTERPARTY]: string | null,
   [FiltersKeys.FAVORITE_COUNTERPARTY]: string | null,
@@ -21,7 +12,11 @@ export type FormGroupValue = {
   [FiltersKeys.PRICE_SIGN]: PriceSign | null,
   [FiltersKeys.AMOUNT_MIN]: number | null,
   [FiltersKeys.AMOUNT_MAX]: number | null,
+  [FiltersKeys.ORDERS_AMOUNT]: number | null,
+  [FiltersKeys.EXECUTION_PERCENT]: number | null,
 }
+
+export type FormGroupType = { [ FgValueKey in keyof FormGroupValue ]: FormControl<FormGroupValue[FgValueKey]> };
 
 @Component({
   selector: 'app-popup',
@@ -41,6 +36,8 @@ export class PopupComponent implements OnInit {
     [FiltersKeys.PRICE_SIGN]: new FormControl<PriceSign | null>(null),
     [FiltersKeys.AMOUNT_MIN]: new FormControl<number | null>(null, [Validators.min(1)]),
     [FiltersKeys.AMOUNT_MAX]: new FormControl<number | null>(null),
+    [FiltersKeys.ORDERS_AMOUNT]: new FormControl<number | null>(null, [Validators.min(1)]),
+    [FiltersKeys.EXECUTION_PERCENT]: new FormControl<number | null>(null, [Validators.min(1), Validators.max(100)]),
   }, [amountValidator()]);
 
   ngOnInit(): void {
@@ -68,10 +65,18 @@ export class PopupComponent implements OnInit {
           this.form.get(FiltersKeys.AMOUNT_MIN)?.disable();
           this.form.get(FiltersKeys.AMOUNT_MAX)?.disable();
         }
+
+        if (!options?.[OptionsKeys.FILTER_BY_ORDERS_AMOUNT]) {
+          this.form.get(FiltersKeys.ORDERS_AMOUNT)?.disable();
+        }
+
+        if (!options?.[OptionsKeys.FILTER_BY_EXECUTION_PERCENT]) {
+          this.form.get(FiltersKeys.EXECUTION_PERCENT)?.disable();
+        }
       },
       error: (err) => {
         console.error(`Ошибка при получении ключей '${OptionsKeys.FILTER_BY_COUNTERPARTY}', '${OptionsKeys.FILTER_BY_PRICE}',
-          '${OptionsKeys.FILTER_BY_AMOUNT}' из хранилища: ${err}`);
+          '${OptionsKeys.FILTER_BY_AMOUNT}', '${OptionsKeys.FILTER_BY_ORDERS_AMOUNT}', '${OptionsKeys.FILTER_BY_EXECUTION_PERCENT}' из хранилища: ${err}`);
       }
     });
   }
