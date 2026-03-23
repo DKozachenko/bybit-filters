@@ -36,6 +36,8 @@ export class BrowserStorageService {
       OptionsKeys.FILTER_BY_COUNTERPARTY,
       OptionsKeys.FILTER_BY_PRICE,
       OptionsKeys.FILTER_BY_AMOUNT,
+      OptionsKeys.FILTER_BY_ORDERS_AMOUNT,
+      OptionsKeys.FILTER_BY_EXECUTION_PERCENT
     ]);
   }
 
@@ -47,6 +49,8 @@ export class BrowserStorageService {
       FiltersKeys.PRICE_SIGN,
       FiltersKeys.AMOUNT_MIN,
       FiltersKeys.AMOUNT_MAX,
+      FiltersKeys.ORDERS_AMOUNT,
+      FiltersKeys.EXECUTION_PERCENT
     ]);
   }
 }

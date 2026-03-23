@@ -112,4 +112,9 @@ npm run assembly:ext
 
 - Handle of `tr` in offers `table`
 
+#### [2.0.0] - 22.03.2026
+
+### Added
+
+- New filter options: by amount of orders and by execution percent
 

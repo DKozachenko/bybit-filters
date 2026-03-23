@@ -5,6 +5,8 @@ async function getOptions(): Promise<Partial<Options>> {
     OptionsKeys.FILTER_BY_COUNTERPARTY,
     OptionsKeys.FILTER_BY_PRICE,
     OptionsKeys.FILTER_BY_AMOUNT,
+    OptionsKeys.FILTER_BY_ORDERS_AMOUNT,
+    OptionsKeys.FILTER_BY_EXECUTION_PERCENT,
   ]);
 }
 
@@ -16,6 +18,8 @@ async function getFilters(): Promise<Partial<Filters>> {
     FiltersKeys.PRICE_SIGN,
     FiltersKeys.AMOUNT_MIN,
     FiltersKeys.AMOUNT_MAX,
+    FiltersKeys.ORDERS_AMOUNT,
+    FiltersKeys.EXECUTION_PERCENT
   ]);
 }
 
@@ -52,6 +56,14 @@ async function getConfig() {
 
       if (Boolean(options?.[OptionsKeys.FILTER_BY_AMOUNT] && filters?.[FiltersKeys.AMOUNT_MAX])) {
         filtersConfig[FiltersKeys.AMOUNT_MAX] = filters[FiltersKeys.AMOUNT_MAX];
+      }
+
+      if (Boolean(options?.[OptionsKeys.FILTER_BY_ORDERS_AMOUNT] && filters?.[FiltersKeys.ORDERS_AMOUNT])) {
+        filtersConfig[FiltersKeys.ORDERS_AMOUNT] = filters[FiltersKeys.ORDERS_AMOUNT];
+      }
+
+      if (Boolean(options?.[OptionsKeys.FILTER_BY_EXECUTION_PERCENT] && filters?.[FiltersKeys.EXECUTION_PERCENT])) {
+        filtersConfig[FiltersKeys.EXECUTION_PERCENT] = filters[FiltersKeys.EXECUTION_PERCENT];
       }
 
       return filtersConfig;
@@ -130,6 +142,10 @@ function handleOffer(offerTr: HTMLElement, config: Partial<Filters>) {
   const price = +(priceAmount?.replace(priceUnit ?? '', '').replace(',', '.') ?? '0');
   const valueRange = offerTr.querySelectorAll<HTMLElement>('.ql-value')[1].textContent;
   const [from, to] = parseRange(valueRange ?? '');
+  const advertiserInfoDiv = offerTr.querySelector<HTMLElement>('.advertiser-info');
+  const delimiter = advertiserInfoDiv?.querySelector('.delimiter');
+  const ordersAmount = parseInt(delimiter?.previousSibling?.textContent?.trim() ?? '');
+  const executionPercent = parseInt(delimiter?.nextSibling?.textContent?.trim() ?? '');
   const buttonText = offerTr?.querySelector<HTMLButtonElement>('.trade-list-action-button button')?.textContent;
 
   resetElementStyles(offerTr);
@@ -163,6 +179,16 @@ function handleOffer(offerTr: HTMLElement, config: Partial<Filters>) {
   if (config?.[FiltersKeys.AMOUNT_MAX] && config?.[FiltersKeys.AMOUNT_MAX] < from) {
     handleUnsuitableElement(offerTr);
   }
+
+  // If orders amount less filter value
+  if (config?.[FiltersKeys.ORDERS_AMOUNT] && config?.[FiltersKeys.ORDERS_AMOUNT] > ordersAmount) {
+    handleUnsuitableElement(offerTr);
+  }
+
+  // If execution percent less filter value
+  if (config?.[FiltersKeys.EXECUTION_PERCENT] && config?.[FiltersKeys.EXECUTION_PERCENT] > executionPercent) {
+    handleUnsuitableElement(offerTr);
+  }
 }
 
 function filterOffers() {
@@ -172,12 +198,13 @@ function filterOffers() {
       const tradesList = document.querySelector<HTMLTableElement>('.trade-list__content table');
       const offersTr = tradesList?.querySelectorAll<HTMLElement>('.trade-table__tbody tr') ?? [];
       const suitableOffersTr = Array.from(offersTr).filter(offerTr => !offerTr.id);
-      suitableOffersTr?.forEach(offerTr => handleOffer(offerTr, config))
+      suitableOffersTr?.forEach(offerTr => handleOffer(offerTr, config));
     })
     .catch(err => {
       console.error(`Ошибка при получении ключей '${OptionsKeys.FILTER_BY_COUNTERPARTY}', '${OptionsKeys.FILTER_BY_PRICE}', '${OptionsKeys.FILTER_BY_AMOUNT}',
         '${FiltersKeys.FAVORITE_COUNTERPARTY}', '${FiltersKeys.EXCLUDE_COUNTERPARTY}', '${FiltersKeys.PRICE}',
-        '${FiltersKeys.PRICE_SIGN}', '${FiltersKeys.AMOUNT_MIN}', '${FiltersKeys.AMOUNT_MAX}' из хранилища: ${err}`)
+        '${FiltersKeys.PRICE_SIGN}', '${FiltersKeys.AMOUNT_MIN}', '${FiltersKeys.AMOUNT_MAX}', '${FiltersKeys.ORDERS_AMOUNT}',
+        '${FiltersKeys.EXECUTION_PERCENT}' из хранилища: ${err}`)
     });
 }
 

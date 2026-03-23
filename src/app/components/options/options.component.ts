@@ -23,6 +23,8 @@ export class OptionsComponent implements OnInit, OnDestroy {
     [OptionsKeys.FILTER_BY_COUNTERPARTY]: new FormControl<boolean>(false),
     [OptionsKeys.FILTER_BY_PRICE]: new FormControl<boolean>(false),
     [OptionsKeys.FILTER_BY_AMOUNT]: new FormControl<boolean>(false),
+    [OptionsKeys.FILTER_BY_ORDERS_AMOUNT]: new FormControl<boolean>(false),
+    [OptionsKeys.FILTER_BY_EXECUTION_PERCENT]: new FormControl<boolean>(false),
   });
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class OptionsComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.error(`Ошибка при получении ключей '${OptionsKeys.FILTER_BY_COUNTERPARTY}', '${OptionsKeys.FILTER_BY_PRICE}',
-          '${OptionsKeys.FILTER_BY_AMOUNT}' из хранилища: ${err}`);
+          '${OptionsKeys.FILTER_BY_AMOUNT}', '${OptionsKeys.FILTER_BY_ORDERS_AMOUNT}', '${OptionsKeys.FILTER_BY_EXECUTION_PERCENT} из хранилища: ${err}`);
       }
     });
   }
