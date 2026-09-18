@@ -197,7 +197,7 @@ function filterOffers() {
       // Have to reget elements each time
       const tradesList = document.querySelector<HTMLTableElement>('.trade-list__content table');
       const offersTr = tradesList?.querySelectorAll<HTMLElement>('.trade-table__tbody tr') ?? [];
-      const suitableOffersTr = Array.from(offersTr).filter(offerTr => !offerTr.id);
+      const suitableOffersTr = Array.from(offersTr).filter(offerTr => !offerTr.id).filter(offerTr => offerTr.classList.length === 0);
       suitableOffersTr?.forEach(offerTr => handleOffer(offerTr, config));
     })
     .catch(err => {
