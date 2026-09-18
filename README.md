@@ -118,3 +118,8 @@ npm run assembly:ext
 
 - New filter options: by amount of orders and by execution percent
 
+#### [2.0.1] - 18.09.2026
+
+### Updated
+
+- Filter for advertisment `tr` in table
